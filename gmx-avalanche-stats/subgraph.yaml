@@ -195,26 +195,26 @@ dataSources:
   #         handler: handleUniswapGmxEthSwap
   #     file: ./src/pricesMapping.ts
 
-  # - kind: ethereum/contract
-  #   name: FeeGmxRewardDistributor
-  #   network: avalanche
-  #   source:
-  #     address: "0x1DE098faF30bD74F22753c28DB17A2560D4F5554"
-  #     abi: RewardDistributor
-  #     startBlock: 218204
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.4
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - GmxStat
-  #     abis:
-  #       - name: RewardDistributor
-  #         file: ./abis/RewardDistributor.json
-  #     eventHandlers:
-  #       - event: Distribute(uint256)
-  #         handler: handleDistributeEthToGmx
-  #     file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FeeGmxRewardDistributor
+    network: avalanche
+    source:
+      address: "0x1DE098faF30bD74F22753c28DB17A2560D4F5554"
+      abi: RewardDistributor
+      startBlock: 218204
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GmxStat
+      abis:
+        - name: RewardDistributor
+          file: ./abis/RewardDistributor.json
+      eventHandlers:
+        - event: Distribute(uint256)
+          handler: handleDistributeEthToGmx
+      file: ./src/mapping.ts
 
   # - kind: ethereum/contract
   #   name: EsgmxGmxRewardDistributor

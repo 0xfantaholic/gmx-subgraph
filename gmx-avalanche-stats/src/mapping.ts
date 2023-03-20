@@ -51,6 +51,7 @@ import {
 import {
   WETH,
   GMX,
+  AVAX,
   BASIS_POINTS_DIVISOR,
   getTokenPrice,
   getTokenDecimals,
@@ -386,7 +387,7 @@ export function handleUpdateFundingRate(event: UpdateFundingRate): void {
 
 export function handleDistributeEthToGmx(event: Distribute): void {
   let amount = event.params.amount
-  let amountUsd = getTokenAmountUsd(WETH, amount)
+  let amountUsd = getTokenAmountUsd(AVAX, amount)
   let totalEntity = _getOrCreateGmxStat("total", "total")
   totalEntity.distributedEth += amount
   totalEntity.distributedEthCumulative += amount
