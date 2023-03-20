@@ -3,7 +3,7 @@ import { BigInt } from "@graphprotocol/graph-ts"
 import {
   Distribute
 } from "../generated/FeeGmxRewardDistributor/RewardDistributor"
-import { GmxStat } from "../generated/schema"
+import { GlpStat, GmxStat } from "../generated/schema"
 
 import {
   AVAX,
@@ -336,27 +336,27 @@ const LIQUIDATOR_ADDRESS = "0x7858a4c42c619a68df6e95df7235a9ec6f0308b9"
 //   totalEntity.save()
 // }
 
-export function handleDistributeEthToGmx(event: Distribute): void {
-  let amount = event.params.amount
-  let amountUsd = getTokenAmountUsd(AVAX, amount)
-  let totalEntity = _getOrCreateGmxStat("total", "total")
-  totalEntity.distributedEth = totalEntity.distributedEth.plus(amount)
-  totalEntity.distributedEthCumulative = totalEntity.distributedEthCumulative.plus(amount)
-  totalEntity.distributedUsd = totalEntity.distributedUsd.plus(amountUsd)
-  totalEntity.distributedUsdCumulative = totalEntity.distributedUsdCumulative.plus(amountUsd)
+// export function handleDistributeEthToGmx(event: Distribute): void {
+//   let amount = event.params.amount
+//   let amountUsd = getTokenAmountUsd(AVAX, amount)
+//   let totalEntity = _getOrCreateGmxStat("total", "total")
+//   totalEntity.distributedEth = totalEntity.distributedEth.plus(amount)
+//   totalEntity.distributedEthCumulative = totalEntity.distributedEthCumulative.plus(amount)
+//   totalEntity.distributedUsd = totalEntity.distributedUsd.plus(amountUsd)
+//   totalEntity.distributedUsdCumulative = totalEntity.distributedUsdCumulative.plus(amountUsd)
 
-  totalEntity.save()
+//   totalEntity.save()
 
-  let id = _getDayId(event.block.timestamp) + ":daily"
-  let entity = _getOrCreateGmxStat(id, "daily")
+//   let id = _getDayId(event.block.timestamp) + ":daily"
+//   let entity = _getOrCreateGmxStat(id, "daily")
 
-  entity.distributedEth = entity.distributedEth.plus(amount)
-  entity.distributedEthCumulative = totalEntity.distributedEthCumulative
-  entity.distributedUsd = entity.distributedUsd.plus(amountUsd)
-  entity.distributedUsdCumulative = totalEntity.distributedUsdCumulative
+//   entity.distributedEth = entity.distributedEth.plus(amount)
+//   entity.distributedEthCumulative = totalEntity.distributedEthCumulative
+//   entity.distributedUsd = entity.distributedUsd.plus(amountUsd)
+//   entity.distributedUsdCumulative = totalEntity.distributedUsdCumulative
 
-  entity.save()
-}
+//   entity.save()
+// }
 // export function handleDistributeEsgmxToGmx(event: Distribute): void {
 //   let amount = event.params.amount
 //   let amountUsd = getTokenAmountUsd(GMX, amount)
@@ -523,22 +523,22 @@ export function handleDistributeEthToGmx(event: Distribute): void {
 //   return entity as TokenStat;
 // }
 
-function _getOrCreateGmxStat(id: string, period: string): GmxStat {
-  let entity = GmxStat.load(id)
-  if (entity == null) {
-    entity = new GmxStat(id)
-    entity.distributedEth = ZERO
-    entity.distributedEthCumulative = ZERO
-    entity.distributedUsd = ZERO
-    entity.distributedUsdCumulative = ZERO
-    entity.distributedEsgmx = ZERO
-    entity.distributedEsgmxCumulative = ZERO
-    entity.distributedEsgmxUsd = ZERO
-    entity.distributedEsgmxUsdCumulative = ZERO
-    entity.period = period
-  }
-  return entity as GmxStat
-}
+// function _getOrCreateGmxStat(id: string, period: string): GmxStat {
+//   let entity = GmxStat.load(id)
+//   if (entity == null) {
+//     entity = new GmxStat(id)
+//     entity.distributedEth = ZERO
+//     entity.distributedEthCumulative = ZERO
+//     entity.distributedUsd = ZERO
+//     entity.distributedUsdCumulative = ZERO
+//     entity.distributedEsgmx = ZERO
+//     entity.distributedEsgmxCumulative = ZERO
+//     entity.distributedEsgmxUsd = ZERO
+//     entity.distributedEsgmxUsdCumulative = ZERO
+//     entity.period = period
+//   }
+//   return entity as GmxStat
+// }
 
 // let TRADE_TYPES = new Array<string>(5)
 // TRADE_TYPES[0] = "margin"
@@ -648,49 +648,49 @@ function _getOrCreateGmxStat(id: string, period: string): GmxStat {
 //   entity.save()
 // }
 
-// function _getOrCreateGlpStat(id: string, period: string, periodTimestmap: i32): GlpStat {
-//   let entity = GlpStat.load(id)
-//   if (entity == null) {
-//     entity = new GlpStat(id)
-//     entity.period = period
-//     entity.glpSupply = ZERO
-//     entity.aumInUsdg = ZERO
-//     entity.distributedEth = ZERO
-//     entity.distributedEthCumulative = ZERO
-//     entity.distributedUsd = ZERO
-//     entity.distributedUsdCumulative = ZERO
-//     entity.distributedEsgmx = ZERO
-//     entity.distributedEsgmxCumulative = ZERO
-//     entity.distributedEsgmxUsd = ZERO
-//     entity.distributedEsgmxUsdCumulative = ZERO
-//     entity.timestamp = periodTimestmap
-//   }
-//   return entity as GlpStat
-// }
+function _getOrCreateGlpStat(id: string, period: string, periodTimestmap: i32): GlpStat {
+  let entity = GlpStat.load(id)
+  if (entity == null) {
+    entity = new GlpStat(id)
+    entity.period = period
+    entity.glpSupply = ZERO
+    entity.aumInUsdg = ZERO
+    entity.distributedEth = ZERO
+    entity.distributedEthCumulative = ZERO
+    entity.distributedUsd = ZERO
+    entity.distributedUsdCumulative = ZERO
+    entity.distributedEsgmx = ZERO
+    entity.distributedEsgmxCumulative = ZERO
+    entity.distributedEsgmxUsd = ZERO
+    entity.distributedEsgmxUsdCumulative = ZERO
+    entity.timestamp = periodTimestmap
+  }
+  return entity as GlpStat
+}
 
-// export function handleDistributeEthToGlp(event: Distribute): void {
-//   let amount = event.params.amount
-//   let amountUsd = getTokenAmountUsd(WETH, amount)
-//   let periodTimestamp = parseInt(_getDayId(event.block.timestamp))
+export function handleDistributeEthToGlp(event: Distribute): void {
+  let amount = event.params.amount
+  let amountUsd = getTokenAmountUsd(AVAX, amount)
+  let periodTimestamp = parseInt(_getDayId(event.block.timestamp)) as i32
 
-//   let totalEntity = _getOrCreateGlpStat("total", "total", periodTimestamp)
-//   totalEntity.distributedEth = totalEntity.distributedEth.plus(amount)
-//   totalEntity.distributedEthCumulative = totalEntity.distributedEthCumulative.plus(amount)
-//   totalEntity.distributedUsd = totalEntity.distributedUsd.plus(amountUsd)
-//   totalEntity.distributedUsdCumulative = totalEntity.distributedUsdCumulative.plus(amountUsd)
+  let totalEntity = _getOrCreateGlpStat("total", "total", periodTimestamp)
+  totalEntity.distributedEth = totalEntity.distributedEth.plus(amount)
+  totalEntity.distributedEthCumulative = totalEntity.distributedEthCumulative.plus(amount)
+  totalEntity.distributedUsd = totalEntity.distributedUsd.plus(amountUsd)
+  totalEntity.distributedUsdCumulative = totalEntity.distributedUsdCumulative.plus(amountUsd)
 
-//   totalEntity.save()
+  totalEntity.save()
 
-//   let id = periodTimestamp.toString() + ":daily"
-//   let entity = _getOrCreateGlpStat(id, "daily", periodTimestamp)
+  let id = periodTimestamp.toString() + ":daily"
+  let entity = _getOrCreateGlpStat(id, "daily", periodTimestamp)
 
-//   entity.distributedEth = entity.distributedEth.plus(amount)
-//   entity.distributedEthCumulative = totalEntity.distributedEthCumulative
-//   entity.distributedUsd = entity.distributedUsd.plus(amountUsd)
-//   entity.distributedUsdCumulative = totalEntity.distributedUsdCumulative
+  entity.distributedEth = entity.distributedEth.plus(amount)
+  entity.distributedEthCumulative = totalEntity.distributedEthCumulative
+  entity.distributedUsd = entity.distributedUsd.plus(amountUsd)
+  entity.distributedUsdCumulative = totalEntity.distributedUsdCumulative
 
-//   entity.save()
-// }
+  entity.save()
+}
 
 // export function handleDistributeEsgmxToGlp(event: Distribute): void {
 //   let amount = event.params.amount
