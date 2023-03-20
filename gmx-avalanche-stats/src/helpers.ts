@@ -41,15 +41,15 @@ export function timestampToPeriod(timestamp: BigInt, period: string): BigInt {
     throw new Error("Unsupported period " + period)
   }
 
-  return timestamp / periodTime * periodTime
+  return timestamp.div(periodTime).times(periodTime);
 }
 
-export function getTokenDecimals(token: String): u8 {
+export function getTokenDecimals(token: string): i32 {
   if (token == BTC_B) {
     token = BTC
   }
 
-  let tokenDecimals = new Map<String, i32>()
+  let tokenDecimals = new Map<string, i32>();
   tokenDecimals.set(WETH, 18)
   tokenDecimals.set(BTC, 8)
   tokenDecimals.set(MIM, 18)
@@ -58,17 +58,17 @@ export function getTokenDecimals(token: String): u8 {
   tokenDecimals.set(USDC, 6)
   tokenDecimals.set(GMX, 18)
 
-  return tokenDecimals.get(token) as u8
+  return tokenDecimals.get(token)
 }
 
-export function getTokenAmountUsd(token: String, amount: BigInt): BigInt {
-  let decimals = getTokenDecimals(token)
+export function getTokenAmountUsd(token: string, amount: BigInt): BigInt {
+  let decimals = getTokenDecimals(token) as u8
   let denominator = BigInt.fromI32(10).pow(decimals)
   let price = getTokenPrice(token)
-  return amount * price / denominator
+  return amount.times(price).div(denominator);
 }
 
-export function getTokenPrice(token: String): BigInt {
+export function getTokenPrice(token: string): BigInt {
   if (token == BTC_B) {
     token = BTC
   }
@@ -78,7 +78,7 @@ export function getTokenPrice(token: String): BigInt {
     if (chainlinkPriceEntity != null) {
       // all chainlink prices have 8 decimals
       // adjusting them to fit GMX 30 decimals USD values
-      return chainlinkPriceEntity.value * BigInt.fromI32(10).pow(22)
+      return chainlinkPriceEntity.value.times(BigInt.fromI32(10).pow(22));
     }
   }
 
@@ -91,13 +91,13 @@ export function getTokenPrice(token: String): BigInt {
   }
 
   let prices = new TypedMap<String, BigInt>()
-  prices.set(WETH, BigInt.fromI32(4000) * PRECISION)
-  prices.set(BTC, BigInt.fromI32(50000) * PRECISION)
-  prices.set(AVAX, BigInt.fromI32(100) * PRECISION)
+  prices.set(WETH, BigInt.fromI32(4000).times(PRECISION))
+  prices.set(BTC, BigInt.fromI32(50000).times(PRECISION))
+  prices.set(AVAX, BigInt.fromI32(100).times(PRECISION))
   prices.set(MIM, PRECISION)
   prices.set(USDC_E, PRECISION)
   prices.set(USDC, PRECISION)
-  prices.set(GMX, BigInt.fromI32(30) * PRECISION)
+  prices.set(GMX, BigInt.fromI32(30).times(PRECISION))
 
   return prices.get(token) as BigInt
 }
